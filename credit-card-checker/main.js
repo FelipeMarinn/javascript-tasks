@@ -25,23 +25,45 @@ const batch = [valid1, valid2, valid3, valid4, valid5, invalid1, invalid2, inval
 
 // Add your functions below:
 
-const validateCred = ( arr ) => {  
-    let newArray = Array.from(arr)
+const convertParam = ( param ) => {
+    let x  
+    switch (typeof param) {
+        case 'string':
+            x = parseInt(param)
+            break;   
+        default:
+            x = param;
+    }
+    let myFunc = num => Number(num)
+    let newArray = Array.from(String(x), myFunc)
+    console.log(x)
+    console.log(newArray)
+    return newArray
+}
 
-    for (let i = newArray.length - 1; i >= 1; i-- ) {     
+const validateCred = ( param ) => {
+    let arr
+    if (Array.isArray(param)) {
+        arr = param
+    } else {
+        arr = convertParam(param)
+    }
+   
+    for (let i = arr.length - 1; i >= 1; i-- ) {     
         i--
-        let duplicateDigit = newArray[i] * 2
+        let duplicateDigit = param[i] * 2
 
         if ( duplicateDigit > 9 ) {
-            newArray.splice(i, 1, duplicateDigit - 9)
+            arr.splice(i, 1, duplicateDigit - 9)
         } else {
-            newArray.splice(i, 1, duplicateDigit)
+            arr.splice(i, 1, duplicateDigit)
         }
     }
 
-    let total = newArray.reduce((a,b) => a + b) 
+    let total = arr.reduce((a,b) => a + b) 
     return total % 10 == 0 ? true : false
 }
+console.log(validateCred('4485660743893753199'))
 
 
 const finsdInvalidCards = ( nestedArray ) => {
@@ -81,6 +103,5 @@ function idInvalidCardCompanies( invalidCardArray ) {
 }
 
 
-console.log(validateCred( mystery2 ))
-console.log(finsdInvalidCards(batch))
-console.log(idInvalidCardCompanies(finsdInvalidCards(batch)));
+// console.log(finsdInvalidCards(batch))
+// console.log(idInvalidCardCompanies(finsdInvalidCards(batch)));
